@@ -29,7 +29,6 @@ spec:
         resources:
           limits:
             memory: 512Mi
-            cpu: 250m
         startupProbe:
           httpGet:
             path: /api/cities-with-solar-eclipse
