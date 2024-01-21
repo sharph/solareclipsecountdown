@@ -17,7 +17,7 @@ function sortCities(a: any, b: any) {
 }
 
 const citiesWithEclipse = Object.keys(hashedCities).filter((city) => hashedCities[city].willHaveEclipse);
-const citiesWithEclipseData = citiesWithEclipse.map((city) => hashedCities[city]);
+const citiesWithEclipseData = citiesWithEclipse.map((city) => hashedCities[city]).filter((city) => city.willHaveTotalEclipse || city.population > 500000);
 citiesWithEclipseData.sort(sortCities);
 
 

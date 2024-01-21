@@ -64,11 +64,13 @@
         >
           <ListBox rounded="rounded-none">
             {#each data.citiesWithEclipse as city}
+			<div class:minor={!city.willHaveTotalEclipse}> 
               <ListBoxItem
                 bind:group={citySelector}
                 name="medium"
                 value={city.slug}>{city.displayName}</ListBoxItem
               >
+			  </div>
             {/each}
           </ListBox>
           <div class="arrow bg-surface-100-800-token" />
@@ -89,3 +91,9 @@
     </AppBar>
   </svelte:fragment>
 </AppShell>
+
+<style>
+	.minor {
+		opacity: 0.5;
+	}
+</style>
