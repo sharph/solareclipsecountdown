@@ -7,6 +7,11 @@ export async function GET({ fetch }) {
         hostname: 'https://eclipsecountdown.solar',
     });
     let count = 0;
+    smStream.write({
+        changefreq: 'daily',
+        url: '/',
+        priority: 0.6,
+    });
     cities.forEach((city: any) => {
         const priority = (1 - (count / cities.length)) * 0.9;
         smStream.write({
