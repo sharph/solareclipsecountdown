@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solareclipsecountdown 
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: solareclipsecountdown
+  template:
+    metadata:
+      labels:
+        app: solareclipsecountdown
+    spec:
+      imagePullSecrets:
+      - name: gh-sharph
+      containers:
+      - image: 'ghcr.io/sharph/solareclipsecountdown:{{ .Values.image.tag }}'
+        name: solareclipsecountdown
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 250m
+        startupProbe:
+          httpGet:
+            path: /api/cities-with-solar-eclipse
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 10
+        livenessProbe:
+          httpGet:
+            path: /api/cities-with-solar-eclipse
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /api/cities-with-solar-eclipse
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: solareclipsecountdown
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: solareclipsecountdown
