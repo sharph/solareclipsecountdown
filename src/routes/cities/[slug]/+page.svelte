@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-    <title>{data.city.displayName} | Solar Eclipse Countdown</title>
+    <title>{data.city.displayName} | Solar Eclipse Countdown Timer</title>
 </svelte:head>
 
 <div class="container h-full mx-auto flex justify-center items-center">

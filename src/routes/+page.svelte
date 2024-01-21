@@ -39,7 +39,7 @@ import type { ConicStop } from '@skeletonlabs/skeleton';
 </script>
 
 <svelte:head>
-	<title>Solar Eclipse Countdown</title>
+	<title>Solar Eclipse Countdown Timer</title>
 </svelte:head>
 
 <div class="container h-full mx-auto flex justify-center items-center">

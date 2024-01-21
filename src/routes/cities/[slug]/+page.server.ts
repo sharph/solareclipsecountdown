@@ -10,6 +10,6 @@ export async function load({ fetch, params }) {
 
     return {
         city,
-        title: `Solar Eclipse Countdown for ${city.displayName}`
+        title: `Solar Eclipse Countdown Timer for ${city.displayName}`
     };
 }
