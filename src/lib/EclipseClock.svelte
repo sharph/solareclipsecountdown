@@ -123,12 +123,12 @@
 
   function formatCalendar(date: Date) {
     return dayjs.utc(date).tz(tz).calendar(null, {
-      sameDay: "[Today at] h:mm A",
-      nextDay: "[Tomorrow at] h:mm A",
-      nextWeek: "dddd [at] h:mm A",
-      lastDay: "[Yesterday at] h:mm A",
-      lastWeek: "[Last] dddd [at] h:mm A",
-      sameElse: "dddd, MMMM D [at] h:mm A",
+      sameDay: "[Today at] h:mm:ss A",
+      nextDay: "[Tomorrow at] h:mm:ss A",
+      nextWeek: "dddd [at] h:mm:ss A",
+      lastDay: "[Yesterday at] h:mm:ss A",
+      lastWeek: "[Last] dddd [at] h:mm:ss A",
+      sameElse: "dddd, MMMM D [at] h:mm:ss A",
     });
   }
 </script>
