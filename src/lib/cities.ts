@@ -9,7 +9,7 @@ let nextEclipse = SearchGlobalSolarEclipse(new Date(Date.now() - 24 * 60 * 60 * 
 
 function willHaveEclipse(city: cities.City) {
     if (!city.loc) {
-        return { hasEclipse: false, hasTotalEclipse: false };
+        return { hasEclipse: false, hasTotalEclipse: false, obscuration: 0 };
     }
     const lat = city.loc.coordinates[1];
     const lng = city.loc.coordinates[0];
@@ -17,7 +17,7 @@ function willHaveEclipse(city: cities.City) {
     if (nextEclipse.peak) {
         time = nextEclipse.peak.date;
     } else {
-        return { hasEclipse: false, hasTotalEclipse: false };
+        return { hasEclipse: false, hasTotalEclipse: false, obscuration: 0 };
     }
     const observer = new Observer(lat, lng, 0);
     const sunAt = Equator(Body.Sun, time, observer, true, true);
@@ -26,15 +26,15 @@ function willHaveEclipse(city: cities.City) {
     }
     const localSolarEclipse = SearchLocalSolarEclipse(new Date(time.getTime() - 24 * 60 * 60 * 1000), observer);
     if (localSolarEclipse.peak.altitude < 0) {
-        return { hasEclipse: false, hasTotalEclipse: false };
+        return { hasEclipse: false, hasTotalEclipse: false, obscuration: 0 };
     }
     if ((time.getTime() - 24 * 60 * 60 * 1000
         < localSolarEclipse.peak.time.date.getTime()) &&
         localSolarEclipse.peak.time.date.getTime()
         < time.getTime() + 24 * 60 * 60 * 1000) {
-        return { hasEclipse: true, hasTotalEclipse: !!localSolarEclipse.total_begin };
+        return { hasEclipse: true, hasTotalEclipse: !!localSolarEclipse.total_begin, obscuration: localSolarEclipse.obscuration };
     }
-    return { hasEclipse: false, hasTotalEclipse: false };
+    return { hasEclipse: false, hasTotalEclipse: false, obscuration: 0 };
 }
 
 console.log('processing cities');
@@ -47,8 +47,9 @@ console.log('processing cities');
     if (!city.loc || city.population < 50000) {
         return;
     }
-    const { hasEclipse, hasTotalEclipse } = willHaveEclipse(cityCopy);
+    const { hasEclipse, hasTotalEclipse, obscuration } = willHaveEclipse(cityCopy);
     hashedCities[slug(displayName, { lower: true })].willHaveEclipse = hasEclipse;
     hashedCities[slug(displayName, { lower: true })].willHaveTotalEclipse = hasTotalEclipse;
+    hashedCities[slug(displayName, { lower: true })].obscuration = obscuration;
 });
 console.log('done processing cities');

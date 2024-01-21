@@ -7,6 +7,7 @@
   import type { LocalSolarEclipseInfo } from "$lib/astronomy";
 
   export let localElipseInfo: LocalSolarEclipseInfo;
+  export let city: any;
 
   const DEBUG = false;
 
@@ -18,13 +19,16 @@
   let phases: any = [];
 
   onMount(() => {
-    updateInterval = setInterval(() => {
-      if (!DEBUG) {
-        currentTime = dayjs(new Date());
-      } else {
-        currentTime = dayjs(currentTime.add(1, "second"));
-      }
-    }, !DEBUG ? 1000 : 5);
+    updateInterval = setInterval(
+      () => {
+        if (!DEBUG) {
+          currentTime = dayjs(new Date());
+        } else {
+          currentTime = dayjs(currentTime.add(1, "second"));
+        }
+      },
+      !DEBUG ? 1000 : 50,
+    );
   });
 
   onDestroy(() => {
@@ -46,6 +50,11 @@
           localElipseInfo.total_begin,
           "total eclipse begins",
           "total eclipse began",
+        ],
+        [
+          localElipseInfo.peak,
+          "eclipse peaks",
+          "eclipse peaked",
         ],
         [
           localElipseInfo.total_end,
@@ -72,14 +81,19 @@
         }
       });
       let i;
-      for (i = 0; i < phases.length-1; i++) {
+      for (i = 0; i < phases.length - 1; i++) {
         const phase = phases[i];
+        if(phases.length === 5 && i === 2) {
+            continue;
+        }
         if (currentTime.isBefore(phase.time)) {
           break;
         }
       }
       phases[i].active = true;
-
+      if (phases.length === 3 && phases[1].active) {
+        phases[2].active = true;
+      }
     }
   }
 
@@ -120,8 +134,11 @@
 </script>
 
 <div class="card p-4 m-1">
+  The sun will be {(localElipseInfo.obscuration*100).toFixed(2)}% obscured by the moon {#if city}in {city.name}{:else}at your location{/if}.
+</div>  
+<div class="card p-4 m-1">
   {#each phases as phase, i}
-    <div class="clock" class:dim={!phase.active}>
+    <div class="clock" class:dim={!phase.active} class:lessimportant={phases.length===5 && phase.name.includes('peaks')}>
       <div class="h1">
         {#if currentTime.isAfter(phase.time)}
           {formatSeconds(dayjs(currentTime).diff(phase.time, "second"))}
@@ -131,9 +148,9 @@
       </div>
       <h3 class="h3">
         {#if currentTime.isAfter(phase.time)}
-          After {phase.pastName}
+          after {phase.pastName}
         {:else}
-          Until {phase.name}
+          until {phase.name}
         {/if}
       </h3>
       <h4 class="h4">
@@ -141,7 +158,7 @@
       </h4>
     </div>
     {#if i < phases.length - 1}
-    <hr class="!boarder-t-2 !boarder-gray-200" />
+      <hr class="!boarder-t-2 !boarder-gray-200" />
     {/if}
   {/each}
 </div>
@@ -167,4 +184,18 @@
   .h4 {
     font-weight: 400;
   }
+
+    .lessimportant {
+        display: none;
+    }
+    .lessimportant .h1 {
+    font-weight: 400;
+    font-size: 1.5em !important;
+    display: inline;
+    }
+    .lessimportant .h3 {
+    font-weight: 400;
+    font-size: 1em !important;
+    display: inline;
+    }
 </style>

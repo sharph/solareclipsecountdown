@@ -11,7 +11,7 @@
 <div class="container h-full mx-auto flex justify-center items-center">
   <div class="space-y-5">
 	{#if (data.localEclipse)}
-    <EclipseClock localElipseInfo={data.localEclipse} />
+    <EclipseClock localElipseInfo={data.localEclipse} city={data.city} />
 	{/if}
   </div>
 </div>
