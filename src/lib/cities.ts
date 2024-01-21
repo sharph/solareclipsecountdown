@@ -44,7 +44,7 @@ console.log('processing cities');
     hashedCities[slug(displayName, { lower: true })] = cityCopy;
     hashedCities[slug(displayName, { lower: true })].displayName = displayName;
     hashedCities[slug(displayName, { lower: true })].slug = slug(displayName, { lower: true });
-    if (!city.loc || city.population < 100000) {
+    if (!city.loc || city.population < 50000) {
         return;
     }
     const { hasEclipse, hasTotalEclipse } = willHaveEclipse(cityCopy);
