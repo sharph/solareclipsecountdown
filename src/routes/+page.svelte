@@ -38,6 +38,10 @@ import type { ConicStop } from '@skeletonlabs/skeleton';
 ];
 </script>
 
+<svelte:head>
+	<title>Solar Eclipse Countdown</title>
+</svelte:head>
+
 <div class="container h-full mx-auto flex justify-center items-center">
   <div class="space-y-5">
 	{#if (localEclipse)}
